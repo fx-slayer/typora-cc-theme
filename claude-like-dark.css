@@ -1111,6 +1111,51 @@ header {
 
 /*
  * ──────────────────────────────────────────────────────────
+ * File-library tree — sticky active file
+ * Sticky is applied to .file-tree-node.active (the whole row),
+ * NOT .file-node-content. Reason: leaf files have no children
+ * so .file-tree-node height = 1 row — sticking .file-node-content
+ * inside it gives no scrollable room. Sticking .file-tree-node
+ * inside .file-node-children (the tall sibling list) works.
+ * Bonus: .file-tree-node was already position:relative, so
+ * changing to sticky does NOT shift the tree-line ::before
+ * positioning context — no left/height corrections needed.
+ * ──────────────────────────────────────────────────────────
+ */
+#file-library-tree .file-tree-node.active {
+    position: sticky;
+    background: var(--side-bar-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 99;
+}
+
+/* depth 1 — no ancestors sticky */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node.active {
+    top: 0;
+}
+
+/* depth 2 — 1 ancestor above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
+    top: 30px;
+}
+
+/* depth 3 — 2 ancestors above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
+    top: 60px;
+}
+
+/* depth 4 — 3 ancestors above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
+    top: 90px;
+}
+
+/* depth 5 — 4 ancestors above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
+    top: 120px;
+}
+
+/*
+ * ──────────────────────────────────────────────────────────
  * Search hit highlight
  * ──────────────────────────────────────────────────────────
  */
