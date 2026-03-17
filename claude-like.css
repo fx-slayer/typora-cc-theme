@@ -547,7 +547,13 @@ tt {
 .file-tree-node.active > .file-node-content,
 .outline-item.active {
     background-color: var(--active-file-bg-color);
+    padding-left: 2px;
+/*
+* 这里只高亮就行，不再通过 border-left 向右平移 2px
     border-left: 2px solid var(--active-file-border-color);
+* 本来想着要不用 padding-left 呢，但是 padding-left 没办法加颜色，可惜
+    padding-left: 2px solid var(--active-file-border-color);
+*/
 }
 
 #typora-quick-open {
@@ -911,8 +917,26 @@ header {
 /*
  * ──────────────────────────────────────────────────────────
  * File-library tree — hierarchy connector lines
+ *
+ * Layout (Typora base CSS):
+ *   .file-tree-node { padding-left: 8px }
+ *   .file-node-content { padding-top: 4px; line-height: 22px }
+ *   .file-node-icon { float: left; line-height: 22px }
+ *   .file-node-background { position: absolute; left: 0; z-index: -1 }
+ *
+ * Strategy:
+ *   • Vertical stem → ::before on .file-node-content  (height:100% of .file-tree-node, clips for last sibling)
+ *   • L-connector   → ::after on .file-node-icon  (T-junction for mid-siblings, └ corner for last)
+ *   • NOTE: contain: layout was intentionally NOT applied to .file-tree-node.
+ *     Although it would anchor .file-node-background (position:absolute)
+ *     per-row, it also creates a layout containment boundary that breaks
+ *     Typora's native focusToFile() — which walks the offsetTop chain to
+ *     compute the scroll target. With contain: layout the chain returns
+ *     wrong values, causing the sidebar to jump on active-file switches.
  * ──────────────────────────────────────────────────────────
  */
+
+/* ── Tree padding ── */
 #file-library-tree {
     padding-top: 8px;
     padding-left: 12px;
@@ -920,126 +944,10 @@ header {
     box-sizing: border-box;
 }
 
+/* ── Per-node layout ── */
 .file-tree-node {
-    position: relative;
     padding-left: 0;
     margin-left: 0;
-}
-
-.file-node-expanded > .file-node-children {
-    margin-left: 29px;
-}
-
-.file-tree-node > .file-node-background {
-    border-radius: 5px;
-    margin-left: -12px;
-    border: none !important;
-}
-
-#file-library-tree .file-node-root > .file-node-content {
-    margin-left: -3px !important;
-}
-
-#file-library-tree .file-tree-node > .file-node-content {
-    margin-left: -16px;
-}
-
-#file-library-tree .file-node-collapsed > .file-node-content,
-#file-library-tree .file-node-expanded > .file-node-content {
-    margin-left: -9px;
-}
-
-.file-library-node:not(.file-node-root):focus > .file-node-content {
-    outline: none;
-}
-
-.file-library-node:not(.file-node-root):focus > .file-node-background {
-    border: 1px dashed var(--border-color) !important;
-}
-
-.file-library-node.active:not(.file-node-root):focus > .file-node-background {
-    border: 1px dashed var(--accent-color) !important;
-}
-
-#file-library-tree .file-tree-node .file-node-icon {
-    padding-left: 3px;
-}
-
-#file-library-tree .file-node-open-state i {
-    position: relative;
-    z-index: 30;
-    padding-left: 4px;
-}
-
-#file-library-tree .file-node-content > .file-node-icon::before {
-    position: relative;
-    z-index: 35;
-}
-
-/* vertical stem */
-#file-library-tree .file-node-content::before {
-    content: "";
-    position: absolute;
-    z-index: 20;
-    left: -21px;
-    top: -8px;
-    display: block;
-    width: 1px;
-    height: 100%;
-    background: var(--border-color);
-}
-
-/* L-shaped branch connector */
-#file-library-tree .file-node-content > .file-node-icon::after {
-    content: "";
-    position: absolute;
-    z-index: 20;
-    left: -21px;
-    top: 14px;
-    width: 12px;
-    height: 16px;
-    border-left: 1px solid var(--border-color);
-    border-top: 1px solid var(--border-color);
-    background: transparent;
-}
-
-#file-library-tree .active > .file-node-content > .file-node-icon::after {
-    width: 9px;
-}
-
-#file-library-tree .file-node-expanded > .file-node-content > .file-node-icon::after {
-    left: -21px;
-    top: 15px;
-    width: 8px;
-}
-
-#file-library-tree .file-node-collapsed > .file-node-content > .file-node-icon::after {
-    left: -21px;
-    top: 14px;
-    width: 12px;
-}
-
-/* last sibling: bottom-left corner instead of T-junction */
-#file-library-tree .file-node-children > div:last-of-type > .file-node-content > .file-node-icon::after {
-    border-top: none;
-    border-bottom: 1px solid var(--border-color);
-    border-bottom-left-radius: 3px;
-    top: -1px;
-}
-
-/* clip vertical stem for last sibling */
-#file-library-tree .file-node-children > div:last-of-type > .file-node-content::before {
-    height: 16px;
-    bottom: -16px;
-}
-
-/* root node: no branch connector */
-.file-node-root > .file-node-content > .file-node-icon::after {
-    display: none;
-}
-
-#file-library-tree .file-node-root > .file-node-children {
-    margin-left: 27px;
 }
 
 /*
@@ -1047,7 +955,9 @@ header {
  * File-library tree — sticky ancestor breadcrumb
  * Ancestor folders of the active file pin to the top when
  * scrolling, keeping hierarchy context always visible.
- * top values assume ~30 px row height; tweak if rows differ.
+ * Safe with the current tree-line implementation because
+ * vertical stems live on .file-node-children, not on the
+ * sticky .file-node-content itself.
  * ──────────────────────────────────────────────────────────
  */
 #file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content {
@@ -1081,38 +991,6 @@ header {
     z-index: 100;
 }
 
-/* Fix tree lines broken by position:sticky on .file-node-content:
-   1. ::before loses its containing block (height:100% shrinks to 1 row, left
-      shifts by 9 px because .file-node-content has margin-left:-9px).
-      → Hide it; redraw as .file-tree-node::after (referenced to .file-tree-node,
-        so height:100% still spans the full subtree and left is correct).
-   2. .file-node-icon::after left shifts by 9 px for the same reason.
-      → Compensate: -21px + 9px = -12px. */
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content::before {
-    display: none;
-}
-
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active)::after {
-    content: '';
-    position: absolute;
-    width: 1px;
-    left: -21px;
-    top: -8px;
-    height: 100%;
-    background: var(--border-color);
-    z-index: 20;
-}
-
-/* Last sibling: no downward stem — mirrors the original ::before rule */
-#file-library-tree .file-node-children > div:last-of-type:has(.file-tree-node.active)::after {
-    display: none;
-}
-
-/* L-connector: compensate 9 px left shift */
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content > .file-node-icon::after {
-    left: -12px;
-}
-
 /*
  * ──────────────────────────────────────────────────────────
  * File-library tree — sticky active file
@@ -1121,9 +999,8 @@ header {
  * so .file-tree-node height = 1 row — sticking .file-node-content
  * inside it gives no scrollable room. Sticking .file-tree-node
  * inside .file-node-children (the tall sibling list) works.
- * Bonus: .file-tree-node was already position:relative, so
- * changing to sticky does NOT shift the tree-line ::before
- * positioning context — no left/height corrections needed.
+ * NOTE: contain: layout is intentionally absent — it would break
+ * Typora's focusToFile() offsetTop chain causing the sidebar jump.
  * ──────────────────────────────────────────────────────────
  */
 #file-library-tree .file-tree-node.active {
@@ -1156,6 +1033,111 @@ header {
 /* depth 5 — 4 ancestors above */
 #file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
     top: 120px;
+}
+
+.file-tree-node > .file-node-background {
+    border-radius: 5px;
+    border: none !important;
+}
+
+/* ── Focus ring ── */
+.file-library-node:not(.file-node-root):focus > .file-node-content {
+    outline: none;
+}
+.file-library-node:not(.file-node-root):focus > .file-node-background {
+    border: 1px dashed var(--border-color) !important;
+}
+.file-library-node.active:not(.file-node-root):focus > .file-node-background {
+    border: 1px dashed var(--accent-color) !important;
+}
+
+/* ── Root node row indent ── */
+#file-library-tree .file-node-root > .file-node-content {
+    padding-left: 4px;
+}
+
+/* ── Root children: keep the top-level stem visible ── */
+#file-library-tree .file-node-root > .file-node-children {
+    padding-left: 20px;
+    border-left: 1px solid var(--border-color);
+    margin-left: 10px;
+}
+
+/* ── Non-root expanded children: indentation + shared vertical stem ── */
+#file-library-tree .file-node-expanded:not(.file-node-root) > .file-node-children {
+    padding-left: 20px;
+    border-left: 1px solid var(--border-color);
+    margin-left: 10px;
+}
+
+/* ── Anchor for branch connectors ── */
+#file-library-tree .file-node-content {
+    position: relative;
+}
+
+/* ── Horizontal arm (T-junction base) on non-root nodes ── */
+#file-library-tree .file-tree-node:not(.file-node-root) > .file-node-content::before {
+    content: "";
+    position: absolute;
+    left: -21px;
+    top: 14px;
+    width: 14px;
+    height: 1px;
+    background: var(--border-color);
+}
+
+/* Leaf files and collapsed folders sit 1 px tighter on Typora's left rail. */
+#file-library-tree .file-library-file-node > .file-node-content::before,
+#file-library-tree .file-node-collapsed > .file-node-content::before {
+    left: -21px;
+    width: 13px;
+    top: 2px;
+}
+
+/* ── Last sibling: mask the lower stem and redraw a half-height rounded └ ── */
+#file-library-tree .file-node-children > div:last-of-type > .file-node-content::before {
+    left: -21px;
+    top: 15px;
+    width: 3px;
+    height: 18px;
+    background: var(--side-bar-bg-color);
+    z-index: 21;
+}
+
+#file-library-tree .file-node-children > div:last-of-type > .file-node-content::after {
+    content: "";
+    position: absolute;
+    left: -21px;
+    top: 2px;
+    width: 13px;
+    height: 15px;
+    border-left: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-bottom-left-radius: 4px;
+    z-index: 22;
+}
+
+#file-library-tree .file-node-children > div:last-of-type.file-library-file-node > .file-node-content::after,
+#file-library-tree .file-node-children > div:last-of-type.file-node-collapsed > .file-node-content::after {
+    left: -21px;
+    width: 12px;
+    top: 2px;
+}
+
+/* ── Icon spacing ── */
+#file-library-tree .file-tree-node .file-node-icon {
+    padding-left: 3px;
+}
+
+#file-library-tree .file-node-open-state i {
+    position: relative;
+    z-index: 30;
+    padding-left: 4px;
+}
+
+#file-library-tree .file-node-content > .file-node-icon::before {
+    position: relative;
+    z-index: 35;
 }
 
 /*
