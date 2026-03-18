@@ -458,6 +458,22 @@ tt {
 .md-task-list-item > input {
     margin-left: -1.3em;
     accent-color: var(--accent-color);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.md-task-list-item > input:hover {
+    transform: scale(1.1);
+}
+
+.md-task-list-item.task-list-done {
+    opacity: 0.6;
+    color: var(--code-muted-color);
+    transition: all 0.3s ease;
+}
+
+.md-task-list-item.task-list-done > p {
+    text-decoration: line-through;
 }
 
 @media print {
@@ -546,8 +562,12 @@ tt {
 
 .file-tree-node.active > .file-node-content,
 .outline-item.active {
-    background-color: var(--active-file-bg-color);
-    border-left: 2px solid var(--active-file-border-color);
+    background-color: #262320 !important; /* solid color, slightly lighter than sidebar */
+    box-shadow: inset 3px 0 0 var(--accent-color); /* Claude-like left bar indicator */
+    font-weight: 500;
+}
+.file-tree-node.active > .file-node-content {
+    color: var(--text-color);
 }
 
 #typora-quick-open {
@@ -907,8 +927,26 @@ header {
 /*
  * ──────────────────────────────────────────────────────────
  * File-library tree — hierarchy connector lines
+ *
+ * Layout (Typora base CSS):
+ *   .file-tree-node { padding-left: 8px }
+ *   .file-node-content { padding-top: 4px; line-height: 22px }
+ *   .file-node-icon { float: left; line-height: 22px }
+ *   .file-node-background { position: absolute; left: 0; z-index: -1 }
+ *
+ * Strategy:
+ *   • Vertical stem → ::before on .file-node-content  (height:100% of .file-tree-node, clips for last sibling)
+ *   • L-connector   → ::after on .file-node-icon  (T-junction for mid-siblings, └ corner for last)
+ *   • NOTE: contain: layout was intentionally NOT applied to .file-tree-node.
+ *     Although it would anchor .file-node-background (position:absolute)
+ *     per-row, it also creates a layout containment boundary that breaks
+ *     Typora's native focusToFile() — which walks the offsetTop chain to
+ *     compute the scroll target. With contain: layout the chain returns
+ *     wrong values, causing the sidebar to jump on active-file switches.
  * ──────────────────────────────────────────────────────────
  */
+
+/* ── Tree padding ── */
 #file-library-tree {
     padding-top: 8px;
     padding-left: 12px;
@@ -916,47 +954,182 @@ header {
     box-sizing: border-box;
 }
 
+/* ── Per-node layout ── */
 .file-tree-node {
-    position: relative;
     padding-left: 0;
     margin-left: 0;
 }
 
-.file-node-expanded > .file-node-children {
-    margin-left: 29px;
+/*
+ * ──────────────────────────────────────────────────────────
+ * File-library tree — sticky ancestor breadcrumb
+ * Ancestor folders of the active file pin to the top when
+ * scrolling, keeping hierarchy context always visible.
+ * Safe with the current tree-line implementation because
+ * vertical stems live on .file-node-children, not on the
+ * sticky .file-node-content itself.
+ * ──────────────────────────────────────────────────────────
+ */
+#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content {
+    position: sticky;
+    background: var(--side-bar-bg-color); /* solid dark */
+    border-bottom: 1px solid rgba(255,255,255,0.03); /* very subtle dark mode line */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* subtle depth */
+    z-index: 100;
 }
+
+/* depth 1 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 0; z-index: 110; }
+/* depth 2 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 30px; z-index: 109; }
+/* depth 3 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 60px; z-index: 108; }
+/* depth 4 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 90px; z-index: 107; }
+/* depth 5 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 120px; z-index: 106; }
+/* depth 6 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 150px; z-index: 105; }
+/* depth 7 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 180px; z-index: 104; }
+/* depth 8 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 210px; z-index: 103; }
+/* depth 9 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 240px; z-index: 102; }
+/* depth 10 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content { top: 270px; z-index: 101; }
+
+/*
+ * ──────────────────────────────────────────────────────────
+ * File-library tree — sticky active file
+ * Sticky is applied to .file-tree-node.active (the whole row),
+ * NOT .file-node-content. Reason: leaf files have no children
+ * so .file-tree-node height = 1 row — sticking .file-node-content
+ * inside it gives no scrollable room. Sticking .file-tree-node
+ * inside .file-node-children (the tall sibling list) works.
+ * NOTE: contain: layout is intentionally absent — it would break
+ * Typora's focusToFile() offsetTop chain causing the sidebar jump.
+ * ──────────────────────────────────────────────────────────
+ */
+#file-library-tree .file-tree-node.active {
+    position: sticky;
+    background: #262320; /* solid dark active background */
+    border-bottom: 1px solid rgba(255,255,255,0.03); /* very subtle dark mode line */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15); /* slightly more depth for active file */
+    z-index: 99;
+}
+
+/* depth 1 — no ancestors sticky */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node.active { top: 0; }
+/* depth 2 — 1 ancestor above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 30px; }
+/* depth 3 — 2 ancestors above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 60px; }
+/* depth 4 — 3 ancestors above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 90px; }
+/* depth 5 — 4 ancestors above */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 120px; }
+/* depth 6 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 150px; }
+/* depth 7 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 180px; }
+/* depth 8 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 210px; }
+/* depth 9 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 240px; }
+/* depth 10 */
+#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active { top: 270px; }
 
 .file-tree-node > .file-node-background {
     border-radius: 5px;
-    margin-left: -12px;
     border: none !important;
 }
 
-#file-library-tree .file-node-root > .file-node-content {
-    margin-left: -3px !important;
-}
-
-#file-library-tree .file-tree-node > .file-node-content {
-    margin-left: -16px;
-}
-
-#file-library-tree .file-node-collapsed > .file-node-content,
-#file-library-tree .file-node-expanded > .file-node-content {
-    margin-left: -9px;
-}
-
+/* ── Focus ring ── */
 .file-library-node:not(.file-node-root):focus > .file-node-content {
     outline: none;
 }
-
 .file-library-node:not(.file-node-root):focus > .file-node-background {
     border: 1px dashed var(--border-color) !important;
 }
-
 .file-library-node.active:not(.file-node-root):focus > .file-node-background {
     border: 1px dashed var(--accent-color) !important;
 }
 
+/* ── Root node row indent ── */
+#file-library-tree .file-node-root > .file-node-content {
+    padding-left: 4px;
+}
+
+/* ── Root children: keep the top-level stem visible ── */
+#file-library-tree .file-node-root > .file-node-children {
+    padding-left: 20px;
+    border-left: 1px solid var(--border-color);
+    margin-left: 10px;
+}
+
+/* ── Non-root expanded children: indentation + shared vertical stem ── */
+#file-library-tree .file-node-expanded:not(.file-node-root) > .file-node-children {
+    padding-left: 20px;
+    border-left: 1px solid var(--border-color);
+    margin-left: 10px;
+}
+
+/* ── Anchor for branch connectors ── */
+#file-library-tree .file-node-content {
+    position: relative;
+}
+
+/* ── Horizontal arm (T-junction base) on non-root nodes ── */
+#file-library-tree .file-tree-node:not(.file-node-root) > .file-node-content::before {
+    content: "";
+    position: absolute;
+    left: -21px;
+    top: 14px;
+    width: 14px;
+    height: 1px;
+    background: var(--border-color);
+}
+
+/* Leaf files and collapsed folders sit 1 px tighter on Typora's left rail. */
+#file-library-tree .file-library-file-node > .file-node-content::before,
+#file-library-tree .file-node-collapsed > .file-node-content::before {
+    left: -21px;
+    width: 13px;
+    top: 2px;
+}
+
+/* ── Last sibling: mask the lower stem and redraw a half-height rounded └ ── */
+#file-library-tree .file-node-children > div:last-of-type > .file-node-content::before {
+    left: -21px;
+    top: 15px;
+    width: 3px;
+    height: 18px;
+    background: var(--side-bar-bg-color);
+    z-index: 21;
+}
+
+#file-library-tree .file-node-children > div:last-of-type > .file-node-content::after {
+    content: "";
+    position: absolute;
+    left: -21px;
+    top: 2px;
+    width: 13px;
+    height: 15px;
+    border-left: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-bottom-left-radius: 4px;
+    z-index: 22;
+}
+
+#file-library-tree .file-node-children > div:last-of-type.file-library-file-node > .file-node-content::after,
+#file-library-tree .file-node-children > div:last-of-type.file-node-collapsed > .file-node-content::after {
+    left: -21px;
+    width: 12px;
+    top: 2px;
+}
+
+/* ── Icon spacing ── */
 #file-library-tree .file-tree-node .file-node-icon {
     padding-left: 3px;
 }
@@ -970,188 +1143,6 @@ header {
 #file-library-tree .file-node-content > .file-node-icon::before {
     position: relative;
     z-index: 35;
-}
-
-/* vertical stem */
-#file-library-tree .file-node-content::before {
-    content: "";
-    position: absolute;
-    z-index: 20;
-    left: -21px;
-    top: -8px;
-    display: block;
-    width: 1px;
-    height: 100%;
-    background: var(--border-color);
-}
-
-/* L-shaped branch connector */
-#file-library-tree .file-node-content > .file-node-icon::after {
-    content: "";
-    position: absolute;
-    z-index: 20;
-    left: -21px;
-    top: 14px;
-    width: 12px;
-    height: 16px;
-    border-left: 1px solid var(--border-color);
-    border-top: 1px solid var(--border-color);
-    background: transparent;
-}
-
-#file-library-tree .active > .file-node-content > .file-node-icon::after {
-    width: 9px;
-}
-
-#file-library-tree .file-node-expanded > .file-node-content > .file-node-icon::after {
-    left: -21px;
-    top: 15px;
-    width: 8px;
-}
-
-#file-library-tree .file-node-collapsed > .file-node-content > .file-node-icon::after {
-    left: -21px;
-    top: 14px;
-    width: 12px;
-}
-
-/* last sibling: bottom-left corner instead of T-junction */
-#file-library-tree .file-node-children > div:last-of-type > .file-node-content > .file-node-icon::after {
-    border-top: none;
-    border-bottom: 1px solid var(--border-color);
-    border-bottom-left-radius: 3px;
-    top: -1px;
-}
-
-/* clip vertical stem for last sibling */
-#file-library-tree .file-node-children > div:last-of-type > .file-node-content::before {
-    height: 16px;
-    bottom: -16px;
-}
-
-/* root node: no branch connector */
-.file-node-root > .file-node-content > .file-node-icon::after {
-    display: none;
-}
-
-#file-library-tree .file-node-root > .file-node-children {
-    margin-left: 27px;
-}
-
-/*
- * ──────────────────────────────────────────────────────────
- * File-library tree — sticky ancestor breadcrumb
- * Ancestor folders of the active file pin to the top when
- * scrolling, keeping hierarchy context always visible.
- * top values assume ~30 px row height; tweak if rows differ.
- * ──────────────────────────────────────────────────────────
- */
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content {
-    position: sticky;
-    background: var(--side-bar-bg-color);
-    border-bottom: 1px solid var(--border-color);
-    z-index: 100;
-}
-
-/* depth 1 */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content {
-    top: 0;
-    z-index: 103;
-}
-
-/* depth 2 */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content {
-    top: 30px;
-    z-index: 102;
-}
-
-/* depth 3 */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content {
-    top: 60px;
-    z-index: 101;
-}
-
-/* depth 4 */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node:has(.file-tree-node.active) > .file-node-content {
-    top: 90px;
-    z-index: 100;
-}
-
-/* Fix tree lines broken by position:sticky on .file-node-content:
-   1. ::before loses its containing block (height:100% shrinks to 1 row, left
-      shifts by 9 px because .file-node-content has margin-left:-9px).
-      → Hide it; redraw as .file-tree-node::after (referenced to .file-tree-node,
-        so height:100% still spans the full subtree and left is correct).
-   2. .file-node-icon::after left shifts by 9 px for the same reason.
-      → Compensate: -21px + 9px = -12px. */
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content::before {
-    display: none;
-}
-
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active)::after {
-    content: '';
-    position: absolute;
-    width: 1px;
-    left: -21px;
-    top: -8px;
-    height: 100%;
-    background: var(--border-color);
-    z-index: 20;
-}
-
-/* Last sibling: no downward stem — mirrors the original ::before rule */
-#file-library-tree .file-node-children > div:last-of-type:has(.file-tree-node.active)::after {
-    display: none;
-}
-
-/* L-connector: compensate 9 px left shift */
-#file-library-tree .file-tree-node:not(.file-node-root):has(.file-tree-node.active) > .file-node-content > .file-node-icon::after {
-    left: -12px;
-}
-
-/*
- * ──────────────────────────────────────────────────────────
- * File-library tree — sticky active file
- * Sticky is applied to .file-tree-node.active (the whole row),
- * NOT .file-node-content. Reason: leaf files have no children
- * so .file-tree-node height = 1 row — sticking .file-node-content
- * inside it gives no scrollable room. Sticking .file-tree-node
- * inside .file-node-children (the tall sibling list) works.
- * Bonus: .file-tree-node was already position:relative, so
- * changing to sticky does NOT shift the tree-line ::before
- * positioning context — no left/height corrections needed.
- * ──────────────────────────────────────────────────────────
- */
-#file-library-tree .file-tree-node.active {
-    position: sticky;
-    background: var(--side-bar-bg-color);
-    border-bottom: 1px solid var(--border-color);
-    z-index: 99;
-}
-
-/* depth 1 — no ancestors sticky */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node.active {
-    top: 0;
-}
-
-/* depth 2 — 1 ancestor above */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
-    top: 30px;
-}
-
-/* depth 3 — 2 ancestors above */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
-    top: 60px;
-}
-
-/* depth 4 — 3 ancestors above */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
-    top: 90px;
-}
-
-/* depth 5 — 4 ancestors above */
-#file-library-tree .file-node-root > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node > .file-node-children > .file-tree-node.active {
-    top: 120px;
 }
 
 /*

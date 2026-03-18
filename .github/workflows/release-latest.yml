@@ -1,0 +1,38 @@
+name: Release Theme Package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build zip package
+        run: zip -j Typora_Claude-Like_Theme.zip claude-like.css claude-like-dark.css
+
+      - name: Publish release
+        uses: ncipollo/release-action@v1
+        with:
+          artifactErrorsFailBuild: true
+          artifacts: "claude-like.css,claude-like-dark.css,Typora_Claude-Like_Theme.zip"
+          body: |
+            Release for `${{ github.ref_name }}`.
+
+            Included files:
+            - `claude-like.css`
+            - `claude-like-dark.css`
+            - `Typora_Claude-Like_Theme.zip`
+          generateReleaseNotes: true
+          makeLatest: true
+          name: ${{ github.ref_name }}
+          prerelease: false
+          tag: ${{ github.ref_name }}
