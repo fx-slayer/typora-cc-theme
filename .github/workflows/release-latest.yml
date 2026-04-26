@@ -39,3 +39,9 @@ jobs:
           name: ${{ github.ref_name }}
           prerelease: false
           tag: ${{ github.ref_name }}
+
+      - name: Move Stable tag to this release
+        if: startsWith(github.ref_name, 'v')
+        run: |
+          git tag -f Stable
+          git push -f origin Stable
