@@ -716,15 +716,15 @@ footer {
 .os-windows .megamenu-menu-header,
 .os-windows #megamenu-menu-list,
 .os-windows.megamenu-opened content,
-.os-windows #megamenu-content,
-.os-windows .megamenu-content,
+.os-windows.megamenu-opened #megamenu-content,
+.os-windows.megamenu-opened .megamenu-content,
 .os-windows footer.ty-footer {
     background-image: none !important;
 }
 
 .os-windows.megamenu-opened content,
-.os-windows #megamenu-content,
-.os-windows .megamenu-content {
+.os-windows.megamenu-opened #megamenu-content,
+.os-windows.megamenu-opened .megamenu-content {
     background-color: var(--bg-color) !important;
     color: var(--text-color);
 }
