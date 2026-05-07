@@ -30,6 +30,35 @@
     --inline-code-color: #b14a40;
     --inline-code-bg-color: #f2eeea;
     --inline-code-border-color: #d7cec5;
+    --mermaid-primary-bg-color: #ffffff;
+    --mermaid-primary-border-color: #a84f3a;
+    --mermaid-primary-text-color: #1c1815;
+    --mermaid-note-bg-color: #fffbe6;
+    --mermaid-note-border-color: #e8cf7a;
+    --cScale0: var(--mermaid-primary-bg-color);
+    --cScale1: var(--mermaid-primary-bg-color);
+    --cScale2: var(--mermaid-primary-bg-color);
+    --cScale3: var(--mermaid-primary-bg-color);
+    --cScale4: var(--mermaid-primary-bg-color);
+    --cScale5: var(--mermaid-primary-bg-color);
+    --cScale6: var(--mermaid-primary-bg-color);
+    --cScale7: var(--mermaid-primary-bg-color);
+    --cScale8: var(--mermaid-primary-bg-color);
+    --cScale9: var(--mermaid-primary-bg-color);
+    --cScale10: var(--mermaid-primary-bg-color);
+    --cScale11: var(--mermaid-primary-bg-color);
+    --cScaleLabel0: var(--mermaid-primary-text-color);
+    --cScaleLabel1: var(--mermaid-primary-text-color);
+    --cScaleLabel2: var(--mermaid-primary-text-color);
+    --cScaleLabel3: var(--mermaid-primary-text-color);
+    --cScaleLabel4: var(--mermaid-primary-text-color);
+    --cScaleLabel5: var(--mermaid-primary-text-color);
+    --cScaleLabel6: var(--mermaid-primary-text-color);
+    --cScaleLabel7: var(--mermaid-primary-text-color);
+    --cScaleLabel8: var(--mermaid-primary-text-color);
+    --cScaleLabel9: var(--mermaid-primary-text-color);
+    --cScaleLabel10: var(--mermaid-primary-text-color);
+    --cScaleLabel11: var(--mermaid-primary-text-color);
 }
 
 @include-when-export url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap);
@@ -615,14 +644,14 @@ footer {
 .typora-export svg rect.actor,
 .typora-export svg :is(circle, line, path, rect).actor-man,
 .typora-export svg .actor-man :is(circle, ellipse, path, polygon, rect) {
-    fill: #ffffff !important;
-    stroke: #a84f3a !important;
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
     stroke-width: 1.2px !important;
 }
 
 #write .md-diagram-panel-preview svg .actor-man :is(line, polyline),
 .typora-export svg .actor-man :is(line, polyline) {
-    stroke: #a84f3a !important;
+    stroke: var(--mermaid-primary-border-color) !important;
     stroke-width: 1.2px !important;
 }
 
@@ -632,7 +661,7 @@ footer {
 .typora-export svg text.actor,
 .typora-export svg text.actor-box,
 .typora-export svg text.actor-man {
-    fill: #1c1815 !important;
+    fill: var(--mermaid-primary-text-color) !important;
     stroke: none !important;
     font-family: var(--font-ui) !important;
     font-weight: 500 !important;
@@ -640,24 +669,24 @@ footer {
 
 #write .md-diagram-panel-preview svg .actor-line,
 .typora-export svg .actor-line {
-    stroke: #a84f3a !important;
+    stroke: var(--mermaid-primary-border-color) !important;
 }
 
 #write .md-diagram-panel-preview svg .loopLine,
 .typora-export svg .loopLine {
-    stroke: #a84f3a !important;
+    stroke: var(--mermaid-primary-border-color) !important;
 }
 
 #write .md-diagram-panel-preview svg .labelBox,
 .typora-export svg .labelBox {
-    fill: #ffffff !important;
-    stroke: #a84f3a !important;
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
     stroke-width: 1.2px !important;
 }
 
 #write .md-diagram-panel-preview svg .labelText,
 .typora-export svg .labelText {
-    fill: #1c1815 !important;
+    fill: var(--mermaid-primary-text-color) !important;
     stroke: none !important;
     font-family: var(--font-ui) !important;
     font-weight: 500 !important;
@@ -665,13 +694,330 @@ footer {
 
 #write .md-diagram-panel-preview svg .note,
 .typora-export svg .note {
-    fill: #fffbe6 !important;
-    stroke: #e8cf7a !important;
+    fill: var(--mermaid-note-bg-color) !important;
+    stroke: var(--mermaid-note-border-color) !important;
 }
 
 #write .md-diagram-panel-preview svg .noteText,
 .typora-export svg .noteText {
-    fill: #1c1815 !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg .node rect,
+#write .md-diagram-panel-preview svg .node circle,
+#write .md-diagram-panel-preview svg .node ellipse,
+#write .md-diagram-panel-preview svg .node polygon,
+#write .md-diagram-panel-preview svg .node path,
+#write .md-diagram-panel-preview svg .flowchart-label rect,
+.typora-export svg .node rect,
+.typora-export svg .node circle,
+.typora-export svg .node ellipse,
+.typora-export svg .node polygon,
+.typora-export svg .node path,
+.typora-export svg .flowchart-label rect {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .nodeLabel,
+#write .md-diagram-panel-preview svg .nodeLabel p,
+#write .md-diagram-panel-preview svg .label,
+#write .md-diagram-panel-preview svg .label text,
+#write .md-diagram-panel-preview svg .label span,
+.typora-export svg .nodeLabel,
+.typora-export svg .nodeLabel p,
+.typora-export svg .label,
+.typora-export svg .label text,
+.typora-export svg .label span {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg .edgePath .path,
+#write .md-diagram-panel-preview svg .flowchart-link,
+.typora-export svg .edgePath .path,
+.typora-export svg .flowchart-link {
+    stroke: var(--mermaid-primary-border-color) !important;
+}
+
+#write .md-diagram-panel-preview svg .marker,
+#write .md-diagram-panel-preview svg marker path,
+.typora-export svg .marker,
+.typora-export svg marker path {
+    fill: var(--mermaid-primary-border-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+}
+
+#write .md-diagram-panel-preview svg .edgeLabel,
+#write .md-diagram-panel-preview svg .edgeLabel p,
+#write .md-diagram-panel-preview svg .edgeLabel span,
+.typora-export svg .edgeLabel,
+.typora-export svg .edgeLabel p,
+.typora-export svg .edgeLabel span {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg .edgeLabel rect,
+#write .md-diagram-panel-preview svg .labelBkg,
+.typora-export svg .edgeLabel rect,
+.typora-export svg .labelBkg {
+    fill: var(--mermaid-note-bg-color) !important;
+    stroke: var(--mermaid-note-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .cluster rect,
+.typora-export svg .cluster rect {
+    fill: var(--mermaid-note-bg-color) !important;
+    stroke: var(--mermaid-note-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .cluster-label,
+#write .md-diagram-panel-preview svg .cluster-label text,
+#write .md-diagram-panel-preview svg .cluster-label span,
+.typora-export svg .cluster-label,
+.typora-export svg .cluster-label text,
+.typora-export svg .cluster-label span {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg .timeline-section,
+#write .md-diagram-panel-preview svg .section,
+#write .md-diagram-panel-preview svg .section0,
+#write .md-diagram-panel-preview svg .section1,
+#write .md-diagram-panel-preview svg .section2,
+#write .md-diagram-panel-preview svg .section3,
+#write .md-diagram-panel-preview svg .section4,
+#write .md-diagram-panel-preview svg .section5,
+#write .md-diagram-panel-preview svg .section6,
+#write .md-diagram-panel-preview svg .section7,
+.typora-export svg .timeline-section,
+.typora-export svg .section,
+.typora-export svg .section0,
+.typora-export svg .section1,
+.typora-export svg .section2,
+.typora-export svg .section3,
+.typora-export svg .section4,
+.typora-export svg .section5,
+.typora-export svg .section6,
+.typora-export svg .section7 {
+    fill: var(--mermaid-note-bg-color) !important;
+    stroke: var(--mermaid-note-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .timeline-item,
+#write .md-diagram-panel-preview svg .task,
+#write .md-diagram-panel-preview svg .task0,
+#write .md-diagram-panel-preview svg .task1,
+#write .md-diagram-panel-preview svg .task2,
+#write .md-diagram-panel-preview svg .task3,
+#write .md-diagram-panel-preview svg .task4,
+#write .md-diagram-panel-preview svg .task5,
+#write .md-diagram-panel-preview svg .task6,
+#write .md-diagram-panel-preview svg .task7,
+.typora-export svg .timeline-item,
+.typora-export svg .task,
+.typora-export svg .task0,
+.typora-export svg .task1,
+.typora-export svg .task2,
+.typora-export svg .task3,
+.typora-export svg .task4,
+.typora-export svg .task5,
+.typora-export svg .task6,
+.typora-export svg .task7 {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .timelineTitle,
+#write .md-diagram-panel-preview svg .timeline-title,
+#write .md-diagram-panel-preview svg .titleText,
+#write .md-diagram-panel-preview svg .sectionTitle,
+#write .md-diagram-panel-preview svg .sectionTitle text,
+#write .md-diagram-panel-preview svg .sectionTitle0,
+#write .md-diagram-panel-preview svg .sectionTitle1,
+#write .md-diagram-panel-preview svg .sectionTitle2,
+#write .md-diagram-panel-preview svg .sectionTitle3,
+#write .md-diagram-panel-preview svg .sectionTitle4,
+#write .md-diagram-panel-preview svg .sectionTitle5,
+#write .md-diagram-panel-preview svg .sectionTitle6,
+#write .md-diagram-panel-preview svg .sectionTitle7,
+#write .md-diagram-panel-preview svg .taskText,
+#write .md-diagram-panel-preview svg .taskText0,
+#write .md-diagram-panel-preview svg .taskText1,
+#write .md-diagram-panel-preview svg .taskText2,
+#write .md-diagram-panel-preview svg .taskText3,
+#write .md-diagram-panel-preview svg .taskText4,
+#write .md-diagram-panel-preview svg .taskText5,
+#write .md-diagram-panel-preview svg .taskText6,
+#write .md-diagram-panel-preview svg .taskText7,
+#write .md-diagram-panel-preview svg .taskTextOutsideRight,
+#write .md-diagram-panel-preview svg .taskTextOutsideLeft,
+#write .md-diagram-panel-preview svg .timeline-item text,
+#write .md-diagram-panel-preview svg .eventTitle,
+#write .md-diagram-panel-preview svg .eventText,
+#write .md-diagram-panel-preview svg .eventNodeText,
+#write .md-diagram-panel-preview svg .dateText,
+.typora-export svg .timelineTitle,
+.typora-export svg .timeline-title,
+.typora-export svg .titleText,
+.typora-export svg .sectionTitle,
+.typora-export svg .sectionTitle text,
+.typora-export svg .sectionTitle0,
+.typora-export svg .sectionTitle1,
+.typora-export svg .sectionTitle2,
+.typora-export svg .sectionTitle3,
+.typora-export svg .sectionTitle4,
+.typora-export svg .sectionTitle5,
+.typora-export svg .sectionTitle6,
+.typora-export svg .sectionTitle7,
+.typora-export svg .taskText,
+.typora-export svg .taskText0,
+.typora-export svg .taskText1,
+.typora-export svg .taskText2,
+.typora-export svg .taskText3,
+.typora-export svg .taskText4,
+.typora-export svg .taskText5,
+.typora-export svg .taskText6,
+.typora-export svg .taskText7,
+.typora-export svg .taskTextOutsideRight,
+.typora-export svg .taskTextOutsideLeft,
+.typora-export svg .timeline-item text,
+.typora-export svg .eventTitle,
+.typora-export svg .eventText,
+.typora-export svg .eventNodeText,
+.typora-export svg .dateText {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg :is(.timeline-section, .section, .section0, .section1, .section2, .section3, .section4, .section5, .section6, .section7) :is(rect, path, polygon),
+.typora-export svg :is(.timeline-section, .section, .section0, .section1, .section2, .section3, .section4, .section5, .section6, .section7) :is(rect, path, polygon),
+#write .md-diagram-panel-preview svg :is(.timeline-section, .section, .section0, .section1, .section2, .section3, .section4, .section5, .section6, .section7),
+.typora-export svg :is(.timeline-section, .section, .section0, .section1, .section2, .section3, .section4, .section5, .section6, .section7) {
+    fill: var(--mermaid-note-bg-color) !important;
+    stroke: var(--mermaid-note-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg :is(.timeline-item, .task, .task0, .task1, .task2, .task3, .task4, .task5, .task6, .task7, .eventWrapper, .eventGroup, .eventNode, .event) :is(rect, circle, ellipse, path, polygon),
+.typora-export svg :is(.timeline-item, .task, .task0, .task1, .task2, .task3, .task4, .task5, .task6, .task7, .eventWrapper, .eventGroup, .eventNode, .event) :is(rect, circle, ellipse, path, polygon),
+#write .md-diagram-panel-preview svg :is(.timeline-item, .task, .task0, .task1, .task2, .task3, .task4, .task5, .task6, .task7, .eventWrapper, .eventGroup, .eventNode, .event),
+.typora-export svg :is(.timeline-item, .task, .task0, .task1, .task2, .task3, .task4, .task5, .task6, .task7, .eventWrapper, .eventGroup, .eventNode, .event) {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .timeline-wrapper line,
+#write .md-diagram-panel-preview svg .timelineWrapper line,
+#write .md-diagram-panel-preview svg .timeline-line,
+#write .md-diagram-panel-preview svg .eventLine,
+#write .md-diagram-panel-preview svg .lineWrapper line,
+.typora-export svg .timeline-wrapper line,
+.typora-export svg .timelineWrapper line,
+.typora-export svg .timeline-line,
+.typora-export svg .eventLine,
+.typora-export svg .lineWrapper line {
+    stroke: var(--mermaid-primary-border-color) !important;
+}
+
+#write .md-diagram-panel-preview svg[aria-roledescription="timeline"] text,
+#write .md-diagram-panel-preview svg[aria-roledescription="timeline"] foreignObject,
+#write .md-diagram-panel-preview svg[aria-roledescription="timeline"] foreignObject *,
+.typora-export svg[aria-roledescription="timeline"] text,
+.typora-export svg[aria-roledescription="timeline"] foreignObject,
+.typora-export svg[aria-roledescription="timeline"] foreignObject * {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg[aria-roledescription="timeline"] :is(rect, circle, ellipse, polygon),
+.typora-export svg[aria-roledescription="timeline"] :is(rect, circle, ellipse, polygon) {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg[aria-roledescription="timeline"] :is(.section, .section0, .section1, .section2, .section3, .section4, .section5, .section6, .section7) :is(rect, polygon),
+.typora-export svg[aria-roledescription="timeline"] :is(.section, .section0, .section1, .section2, .section3, .section4, .section5, .section6, .section7) :is(rect, polygon) {
+    fill: var(--mermaid-note-bg-color) !important;
+    stroke: var(--mermaid-note-border-color) !important;
+}
+
+#write .md-diagram-panel-preview svg[aria-roledescription="timeline"] :is(path, line, polyline),
+.typora-export svg[aria-roledescription="timeline"] :is(path, line, polyline) {
+    stroke: var(--mermaid-primary-border-color) !important;
+}
+
+#write .md-diagram-panel-preview svg :is(.task-type0, .task-type1, .task-type2, .task-type3, .task-type4, .task-type5, .task-type6, .task-type7, .active0, .active1, .active2, .active3, .active4, .active5, .active6, .active7, .done0, .done1, .done2, .done3, .done4, .done5, .done6, .done7, .crit0, .crit1, .crit2, .crit3, .crit4, .crit5, .crit6, .crit7),
+.typora-export svg :is(.task-type0, .task-type1, .task-type2, .task-type3, .task-type4, .task-type5, .task-type6, .task-type7, .active0, .active1, .active2, .active3, .active4, .active5, .active6, .active7, .done0, .done1, .done2, .done3, .done4, .done5, .done6, .done7, .crit0, .crit1, .crit2, .crit3, .crit4, .crit5, .crit6, .crit7) {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg :is(.section-type-0, .section-type-1, .section-type-2, .section-type-3, .section-type-4, .section-type-5, .section-type-6, .section-type-7, .section-type0, .section-type1, .section-type2, .section-type3, .section-type4, .section-type5, .section-type6, .section-type7),
+#write .md-diagram-panel-preview svg :is(.section-type-0, .section-type-1, .section-type-2, .section-type-3, .section-type-4, .section-type-5, .section-type-6, .section-type-7, .section-type0, .section-type1, .section-type2, .section-type3, .section-type4, .section-type5, .section-type6, .section-type7) :is(rect, circle, ellipse, path, polygon),
+.typora-export svg :is(.section-type-0, .section-type-1, .section-type-2, .section-type-3, .section-type-4, .section-type-5, .section-type-6, .section-type-7, .section-type0, .section-type1, .section-type2, .section-type3, .section-type4, .section-type5, .section-type6, .section-type7),
+.typora-export svg :is(.section-type-0, .section-type-1, .section-type-2, .section-type-3, .section-type-4, .section-type-5, .section-type-6, .section-type-7, .section-type0, .section-type1, .section-type2, .section-type3, .section-type4, .section-type5, .section-type6, .section-type7) :is(rect, circle, ellipse, path, polygon) {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write :is(.md-diagram-panel-preview, .md-diagram-panel) svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) .node-bkg,
+#write :is(.md-diagram-panel-preview, .md-diagram-panel) svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) :is(rect, path, circle),
+.typora-export svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) .node-bkg,
+.typora-export svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) :is(rect, path, circle) {
+    fill: var(--mermaid-primary-bg-color) !important;
+    stroke: var(--mermaid-primary-border-color) !important;
+    stroke-width: 1.2px !important;
+}
+
+#write :is(.md-diagram-panel-preview, .md-diagram-panel) svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) text,
+#write :is(.md-diagram-panel-preview, .md-diagram-panel) svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) tspan,
+.typora-export svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) text,
+.typora-export svg :is(.timeline-node, .section--1, .section-0, .section-1, .section-2, .section-3, .section-4, .section-5, .section-6, .section-7, .section-8, .section-9, .section-10) tspan {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write :is(.md-diagram-panel-preview, .md-diagram-panel) svg :is(.node-line--1, .node-line-0, .node-line-1, .node-line-2, .node-line-3, .node-line-4, .node-line-5, .node-line-6, .node-line-7, .section-edge--1, .section-edge-0, .section-edge-1, .section-edge-2, .section-edge-3, .section-edge-4, .section-edge-5, .section-edge-6, .section-edge-7),
+.typora-export svg :is(.node-line--1, .node-line-0, .node-line-1, .node-line-2, .node-line-3, .node-line-4, .node-line-5, .node-line-6, .node-line-7, .section-edge--1, .section-edge-0, .section-edge-1, .section-edge-2, .section-edge-3, .section-edge-4, .section-edge-5, .section-edge-6, .section-edge-7) {
+    stroke: var(--mermaid-primary-border-color) !important;
+}
+
+#write .md-diagram-panel-preview svg :is(.taskText0, .taskText1, .taskText2, .taskText3, .taskText4, .taskText5, .taskText6, .taskText7, .activeText0, .activeText1, .activeText2, .activeText3, .activeText4, .activeText5, .activeText6, .activeText7, .doneText0, .doneText1, .doneText2, .doneText3, .doneText4, .doneText5, .doneText6, .doneText7, .critText0, .critText1, .critText2, .critText3, .critText4, .critText5, .critText6, .critText7),
+.typora-export svg :is(.taskText0, .taskText1, .taskText2, .taskText3, .taskText4, .taskText5, .taskText6, .taskText7, .activeText0, .activeText1, .activeText2, .activeText3, .activeText4, .activeText5, .activeText6, .activeText7, .doneText0, .doneText1, .doneText2, .doneText3, .doneText4, .doneText5, .doneText6, .doneText7, .critText0, .critText1, .critText2, .critText3, .critText4, .critText5, .critText6, .critText7) {
+    color: var(--mermaid-primary-text-color) !important;
+    fill: var(--mermaid-primary-text-color) !important;
     stroke: none !important;
     font-family: var(--font-ui) !important;
     font-weight: 500 !important;
