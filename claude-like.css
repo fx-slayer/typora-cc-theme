@@ -16,7 +16,7 @@
     --quote-border-color: #d8cbbb;
     --quote-text-color: #625950;
     --table-alt-color: #f8f3ec;
-    --font-body: "Anthropic Serif", Georgia, "Times New Roman", "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "PingFang SC", "Hiragino Sans GB", serif;
+    --font-body: "Maple Mono", "Maple Mono Normal", "Maple Mono NF", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
     --font-ui: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif;
     --font-mono: Menlo, Monaco, "SF Mono", Consolas, "Sarasa Mono SC", "Cascadia Code", monospace;
     --table-border-strong-color: #cbb9a6;
@@ -35,7 +35,7 @@
 @include-when-export url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap);
 
 html {
-    font-size: 16px;
+    font-size: 14px;
     -webkit-font-smoothing: antialiased;
     background-color: var(--bg-color);
 }
@@ -367,7 +367,7 @@ tt {
     border: 1px solid var(--inline-code-border-color);
     background-color: var(--inline-code-bg-color);
     color: var(--inline-code-color);
-    border-radius: 999px;
+    border-radius: 4px;
     padding: 0.08em 0.42em 0.1em;
     font-size: 0.9em;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
@@ -535,51 +535,6 @@ tt {
     background-color: var(--side-bar-bg-color);
 }
 
-#typora-sidebar,
-#sidebar-content,
-#file-library,
-#file-library-list,
-#file-library-tree,
-#outline-content,
-.sidebar-content,
-.sidebar-content-content,
-.file-list-item,
-.file-node-content,
-.outline-item,
-.outline-label,
-.ty-side-sort-btn {
-    font-family: var(--font-ui) !important;
-    color: var(--text-color);
-}
-
-#file-library-list *:not(.fa):not(.file-node-icon):not(.file-node-open-state),
-#file-library-tree *:not(.fa):not(.file-node-icon):not(.file-node-open-state),
-#outline-content *:not(.fa):not(.outline-expander),
-.sidebar-tabs,
-.sidebar-tabs * {
-    font-family: var(--font-ui) !important;
-}
-
-.file-list-item-file-name,
-.file-list-item-file-ext-part,
-.file-list-item-summary,
-.file-list-item-parent-loc,
-.file-node-title,
-.file-node-title-name-part,
-.file-node-title-ext-part,
-.outline-label,
-.outline-item span {
-    font-family: var(--font-ui) !important;
-}
-
-.file-list-item-summary,
-.file-list-item-parent-loc,
-.file-node-icon,
-.file-node-open-state,
-.outline-expander {
-    color: var(--control-text-color);
-}
-
 .outline-item:hover,
 .file-list-item:hover,
 .ty-side-sort-btn.active,
@@ -635,159 +590,6 @@ footer {
     font-family: var(--font-ui);
 }
 
-.os-windows #megamenu-menu-sidebar,
-.os-windows .megamenu-menu,
-.os-windows .megamenu-menu-header,
-.os-windows #megamenu-menu-list,
-.os-windows .megamenu-content {
-    font-family: var(--font-ui) !important;
-    background-color: var(--window-bg-color);
-    color: var(--text-color);
-}
-
-.os-windows header,
-.os-windows.megamenu-opened header,
-.os-windows #top-titlebar,
-.os-windows footer,
-.os-windows footer.ty-footer,
-.os-windows .ty-footer {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color);
-}
-
-.os-windows #top-titlebar > *,
-.os-windows #top-titlebar .titlebar-button,
-.os-windows #top-titlebar .window-control {
-    background-color: transparent;
-}
-
-.os-windows header > *:not(#top-titlebar):not(.titlebar-button):not(.window-control),
-.os-windows header > *:not(#top-titlebar):not(.titlebar-button):not(.window-control) *:not(.fa),
-.os-windows footer,
-.os-windows .ty-footer {
-    font-family: var(--font-ui) !important;
-}
-
-.os-windows footer .ty-icon,
-.os-windows footer .ty-icon:before,
-.os-windows .ty-footer .ty-icon,
-.os-windows .ty-footer .ty-icon:before,
-.os-windows #ty-sidebar-footer .ty-icon,
-.os-windows #ty-sidebar-footer .ty-icon:before,
-.os-windows #ty-sidebar-footer .ty-add:before,
-.os-windows #ty-sidebar-footer .ty-three-cells:before,
-.os-windows #ty-sidebar-footer .ty-file-tree:before,
-.os-windows #typora-sidebar .sidebar-footer .ty-icon,
-.os-windows #typora-sidebar .sidebar-footer .ty-icon:before {
-    font-family: "typora-icon" !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-}
-
-.os-windows #megamenu-menu-sidebar,
-.os-windows #megamenu-menu-sidebar *:not(.fa),
-.os-windows .megamenu-menu-header,
-.os-windows .megamenu-menu-header *:not(.fa),
-.os-windows #megamenu-menu-list,
-.os-windows #megamenu-menu-list *:not(.fa),
-.os-windows .megamenu-menu-panel,
-.os-windows .megamenu-menu-panel *:not(.fa) {
-    font-family: var(--font-ui) !important;
-}
-
-.os-windows.megamenu-opened header,
-.os-windows #top-titlebar,
-.os-windows #megamenu-menu-sidebar,
-.os-windows .megamenu-menu,
-.os-windows .megamenu-menu-header,
-.os-windows #megamenu-menu-list,
-.os-windows.megamenu-opened content,
-.os-windows.megamenu-opened #megamenu-content,
-.os-windows.megamenu-opened .megamenu-content,
-.os-windows footer.ty-footer {
-    background-image: none !important;
-}
-
-.os-windows.megamenu-opened content,
-.os-windows.megamenu-opened #megamenu-content,
-.os-windows.megamenu-opened .megamenu-content {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color);
-}
-
-.os-windows.megamenu-opened #typora-sidebar {
-    pointer-events: none !important;
-}
-
-.os-windows.megamenu-opened #typora-sidebar-resizer {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-.os-windows #megamenu-menu-sidebar,
-.os-windows .megamenu-menu {
-    box-shadow: none;
-    border-right: 1px solid var(--border-color);
-}
-
-.os-windows .megamenu-menu-header {
-    border-bottom: 1px solid var(--border-color);
-}
-
-.os-windows #megamenu-back-btn,
-.os-windows .megamenu-menu-header #megamenu-menu-header-title,
-.os-windows .megamenu-menu-header #megamenu-menu-header-title:before {
-    color: var(--text-color);
-    border-color: var(--border-color);
-}
-
-.os-windows #megamenu-menu-list li,
-.os-windows #megamenu-menu-list li a,
-.os-windows .megamenu-menu-list li,
-.os-windows .megamenu-menu-list li a {
-    color: var(--text-color);
-    opacity: 1;
-}
-
-.os-windows #megamenu-menu-list li a:hover,
-.os-windows #megamenu-menu-list li a.active,
-.os-windows .megamenu-menu-list li a:hover,
-.os-windows .megamenu-menu-list li a.active {
-    color: var(--heading-color);
-    background-color: var(--item-hover-bg-color);
-}
-
-.os-windows #megamenu-menu-list li.disabled,
-.os-windows #megamenu-menu-list li.disabled a,
-.os-windows .megamenu-menu-list li.disabled,
-.os-windows .megamenu-menu-list li.disabled a {
-    color: var(--control-text-color);
-    opacity: 0.68;
-}
-
-.os-windows .megamenu-menu-panel,
-.os-windows .megamenu-menu-panel table,
-.os-windows .megamenu-menu-panel tbody,
-.os-windows .megamenu-menu-panel tr,
-.os-windows .megamenu-menu-panel td {
-    color: var(--text-color);
-}
-
-.os-windows .megamenu-menu-panel table tr,
-.os-windows .megamenu-menu-panel table tr:nth-child(2n),
-.os-windows .megamenu-menu-panel table td {
-    background-color: transparent !important;
-}
-
-.os-windows .long-btn:hover,
-.os-windows .megamenu-menu-panel tbody tr:hover td {
-    background-color: var(--item-hover-bg-color);
-}
-
 .file-node-content:hover .file-node-icon,
 .file-node-content:hover .file-node-open-state {
     visibility: visible;
@@ -803,6 +605,76 @@ footer {
 
 .md-lang {
     color: #9f7b64;
+}
+
+#write .md-diagram-panel-preview svg .actor,
+#write .md-diagram-panel-preview svg rect.actor,
+#write .md-diagram-panel-preview svg :is(circle, line, path, rect).actor-man,
+#write .md-diagram-panel-preview svg .actor-man :is(circle, ellipse, path, polygon, rect),
+.typora-export svg .actor,
+.typora-export svg rect.actor,
+.typora-export svg :is(circle, line, path, rect).actor-man,
+.typora-export svg .actor-man :is(circle, ellipse, path, polygon, rect) {
+    fill: #ffffff !important;
+    stroke: #a84f3a !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .actor-man :is(line, polyline),
+.typora-export svg .actor-man :is(line, polyline) {
+    stroke: #a84f3a !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg text.actor,
+#write .md-diagram-panel-preview svg text.actor-box,
+#write .md-diagram-panel-preview svg text.actor-man,
+.typora-export svg text.actor,
+.typora-export svg text.actor-box,
+.typora-export svg text.actor-man {
+    fill: #1c1815 !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg .actor-line,
+.typora-export svg .actor-line {
+    stroke: #a84f3a !important;
+}
+
+#write .md-diagram-panel-preview svg .loopLine,
+.typora-export svg .loopLine {
+    stroke: #a84f3a !important;
+}
+
+#write .md-diagram-panel-preview svg .labelBox,
+.typora-export svg .labelBox {
+    fill: #ffffff !important;
+    stroke: #a84f3a !important;
+    stroke-width: 1.2px !important;
+}
+
+#write .md-diagram-panel-preview svg .labelText,
+.typora-export svg .labelText {
+    fill: #1c1815 !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+}
+
+#write .md-diagram-panel-preview svg .note,
+.typora-export svg .note {
+    fill: #fffbe6 !important;
+    stroke: #e8cf7a !important;
+}
+
+#write .md-diagram-panel-preview svg .noteText,
+.typora-export svg .noteText {
+    fill: #1c1815 !important;
+    stroke: none !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
 }
 
 #md-notification .btn {
